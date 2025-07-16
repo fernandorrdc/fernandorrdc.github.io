@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevConnect - Consultoria Empresarial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .service-card-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out;
+        }
+        .service-card-details.open {
+            max-height: 500px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header id="header" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-600">DevConnect</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-600 hover:text-blue-600 transition-colors">Início</a>
+                <a href="#services" class="text-gray-600 hover:text-blue-600 transition-colors">Serviços</a>
+                <a href="#about" class="text-gray-600 hover:text-blue-600 transition-colors">Sobre Nós</a>
+                <a href="#contact" class="text-gray-600 hover:text-blue-600 transition-colors">Contato</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#home" class="block py-2 px-6 text-sm text-gray-600 hover:bg-gray-100">Início</a>
+            <a href="#services" class="block py-2 px-6 text-sm text-gray-600 hover:bg-gray-100">Serviços</a>
+            <a href="#about" class="block py-2 px-6 text-sm text-gray-600 hover:bg-gray-100">Sobre Nós</a>
+            <a href="#contact" class="block py-2 px-6 text-sm text-gray-600 hover:bg-gray-100">Contato</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="bg-white pt-24 pb-16 md:pt-32 md:pb-24">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight mb-4">Parceiros Estratégicos na sua Transformação Digital</h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">A DevConnect oferece soluções tecnológicas e digitais personalizadas para otimizar operações, expandir a sua presença online e impulsionar a inovação no seu negócio.</p>
+                <a href="#services" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">Explore nossos Serviços</a>
+            </div>
+        </section>
+
+        <section id="services" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Nossas Soluções</h2>
+                    <p class="text-md text-gray-600 mt-2">Clique em um serviço para saber mais e descobrir como podemos ajudar.</p>
+                </div>
+                <div id="services-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Nossos Objetivos e Compromisso</h2>
+                    <p class="text-md text-gray-600 mt-2">Visualizamos nosso caminho para o sucesso, focados no crescimento, satisfação do cliente e inovação contínua.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="goalsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="target-audience" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Para Quem Trabalhamos</h2>
+                    <p class="text-md text-gray-600 mt-2">Oferecemos soluções para empresas de todos os tamanhos e setores.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <div class="text-4xl text-blue-600 mb-4">🏢</div>
+                        <h3 class="text-xl font-semibold mb-2">PMEs</h3>
+                        <p class="text-gray-600">Impulsionamos a presença digital e otimizamos processos para pequenas e médias empresas.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <div class="text-4xl text-blue-600 mb-4">🚀</div>
+                        <h3 class="text-xl font-semibold mb-2">Startups</h3>
+                        <p class="text-gray-600">Construímos bases tecnológicas sólidas para apoiar o crescimento acelerado.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <div class="text-4xl text-blue-600 mb-4">🌐</div>
+                        <h3 class="text-xl font-semibold mb-2">Grandes Corporações</h3>
+                        <p class="text-gray-600">Fornecemos expertise especializada para projetos de grande escala e inovação.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech-stack" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Tecnologias que Dominamos</h2>
+                    <p class="text-md text-gray-600 mt-2">Utilizamos um arsenal de tecnologias modernas para construir as melhores soluções.</p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-xl mb-3 text-center">Desenvolvimento Web</h3>
+                        <div class="flex flex-wrap justify-center gap-4 text-sm">
+                            <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">HTML5</span>
+                            <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">CSS3</span>
+                            <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">JavaScript</span>
+                            <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">React</span>
+                            <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">PHP</span>
+                            <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">Node.js</span>
+                            <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">Python</span>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-xl mb-3 text-center">Bases de Dados</h3>
+                        <div class="flex flex-wrap justify-center gap-4 text-sm">
+                             <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">MySQL</span>
+                             <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">PostgreSQL</span>
+                             <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">MongoDB</span>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-xl mb-3 text-center">Inteligência Artificial</h3>
+                        <div class="flex flex-wrap justify-center gap-4 text-sm">
+                             <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">TensorFlow</span>
+                             <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">PyTorch</span>
+                             <span class="bg-gray-200 text-gray-700 py-2 px-4 rounded-full">Scikit-learn</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Vamos Conversar</h2>
+                    <p class="text-md text-gray-600 mt-2">Pronto para iniciar o seu próximo projeto? Entre em contato connosco.</p>
+                </div>
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <form action="mailto:fernandorrdc@hotmail.com" method="post" enctype="text/plain">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Nome</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                         <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                         <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Mensagem</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-blue-700 transition-all duration-300">Enviar Mensagem</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 DevConnect. Todos os direitos reservados.</p>
+            <p class="text-sm text-gray-400 mt-1">Sua parceira em Inovação e Tecnologia.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const servicesData = [
+                {
+                    icon: '💻',
+                    title: 'Criação de Websites',
+                    description: 'Design, desenvolvimento e implantação de websites responsivos, otimizados para SEO e focados na experiência do usuário (UX).',
+                    details: [
+                        'Design personalizado e responsivo',
+                        'Integração com CMS (WordPress, etc.)',
+                        'Otimização para motores de busca (SEO)',
+                        'Desenvolvimento de e-commerce',
+                        'Garantia de segurança e performance'
+                    ]
+                },
+                {
+                    icon: '⚙️',
+                    title: 'Consultoria em Software',
+                    description: 'Análise, seleção, implementação e otimização de softwares empresariais para melhorar a eficiência operacional.',
+                    details: [
+                        'Auditoria de sistemas existentes',
+                        'Recomendação de ERPs, CRMs, etc.',
+                        'Planejamento e execução da implementação',
+                        'Treinamento de usuários e suporte',
+                        'Otimização de fluxos de trabalho'
+                    ]
+                },
+                {
+                    icon: '📈',
+                    title: 'Marketing Digital',
+                    description: 'Desenvolvimento e execução de estratégias de marketing digital para aumentar a visibilidade da marca, gerar leads e impulsionar vendas.',
+                    details: [
+                        'Estratégias de SEO e SEM',
+                        'Gestão de campanhas (Google & Meta Ads)',
+                        'Marketing de conteúdo e mídias sociais',
+                        'Email marketing e automação',
+                        'Análise de métricas e relatórios'
+                    ]
+                },
+                 {
+                    icon: '🧠',
+                    title: 'Machine Learning & IA',
+                    description: 'Desenvolvimento e implementação de soluções de IA para automação, análise preditiva e otimização de processos.',
+                    details: [
+                        'Desenvolvimento de modelos preditivos',
+                        'Implementação de chatbots e assistentes virtuais',
+                        'Automação de processos (RPA com IA)',
+                        'Sistemas de recomendação personalizados',
+                        'Análise de dados para oportunidades de IA'
+                    ]
+                },
+                {
+                    icon: '🛠️',
+                    title: 'Manutenção de Hardware',
+                    description: 'Suporte técnico e manutenção preventiva/corretiva para equipamentos, garantindo a continuidade das operações.',
+                    details: [
+                        'Diagnóstico e reparo de computadores e servidores',
+                        'Otimização e limpeza de hardware',
+                        'Substituição de componentes',
+                        'Instalação e configuração de equipamentos',
+                        'Suporte remoto e presencial'
+                    ]
+                },
+                {
+                    icon: '🌐',
+                    title: 'Serviços de Redes',
+                    description: 'Projeto, implementação e manutenção de infraestruturas de rede seguras, eficientes e escaláveis.',
+                    details: [
+                        'Projeto e configuração de redes (LAN/WLAN)',
+                        'Configuração de firewalls e switches',
+                        'Implementação de VPNs e segurança',
+                        'Monitoramento e otimização de performance',
+                        'Consultoria em segurança de rede'
+                    ]
+                }
+            ];
+
+            const servicesGrid = document.getElementById('services-grid');
+            servicesData.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl';
+                
+                let detailsHtml = '<ul class="space-y-2 list-inside list-disc text-gray-600">';
+                service.details.forEach(detail => {
+                    detailsHtml += `<li>${detail}</li>`;
+                });
+                detailsHtml += '</ul>';
+
+                card.innerHTML = `
+                    <div class="p-6 cursor-pointer service-card-header">
+                        <div class="flex items-center mb-4">
+                            <div class="text-4xl mr-4">${service.icon}</div>
+                            <div>
+                                <h3 class="text-xl font-bold">${service.title}</h3>
+                                <p class="text-gray-600 text-sm">${service.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 service-card-details">
+                        ${detailsHtml}
+                    </div>
+                `;
+                servicesGrid.appendChild(card);
+            });
+
+            document.querySelectorAll('.service-card-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const details = header.nextElementSibling;
+                    const isOpen = details.classList.contains('open');
+                    
+                    document.querySelectorAll('.service-card-details').forEach(d => d.classList.remove('open'));
+
+                    if(!isOpen) {
+                       details.classList.add('open');
+                    }
+                });
+            });
+
+            const goalsCtx = document.getElementById('goalsChart').getContext('2d');
+            new Chart(goalsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Satisfação do Cliente', 'Crescimento da Receita', 'Eficiência Operacional', 'Posicionamento no Mercado', 'Inovação'],
+                    datasets: [{
+                        label: 'Foco Estratégico (%)',
+                        data: [100, 95, 90, 85, 80],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(37, 99, 235, 0.7)',
+                            'rgba(29, 78, 216, 0.7)',
+                            'rgba(30, 64, 175, 0.7)',
+                            'rgba(30, 58, 138, 0.7)'
+                        ],
+                        borderColor: [
+                           'rgba(59, 130, 246, 1)',
+                           'rgba(37, 99, 235, 1)',
+                           'rgba(29, 78, 216, 1)',
+                           'rgba(30, 64, 175, 1)',
+                           'rgba(30, 58, 138, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a, header nav a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                             if (!mobileMenu.classList.contains('hidden')) {
+                                mobileMenu.classList.add('hidden');
+                            }
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2');
+                    header.classList.remove('py-4');
+                } else {
+                    header.classList.add('py-4');
+                    header.classList.remove('py-2');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
